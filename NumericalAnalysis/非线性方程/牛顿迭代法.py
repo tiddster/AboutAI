@@ -17,14 +17,16 @@ def ff(x, a):
         m -= 1
     return res
 
-def Newton(x, k, a):
-    global times
-    times += 1
-    xx = x - f(x, a) / ff(x, a)
-    if abs(xx - x) < k:
-        return xx
-    else:
-        return Newton(xx, k, a)
+def func(x):
+    return f(x, [1, 2, 10, -20])
 
-times = 0
-print(f"解：{Newton(1, 0.000001, [1, 2, 10, -20])}, 迭代次数：{times}")
+def ffunc(x):
+    return ff(x, [1, 2, 10, -20])
+
+def Newton(fun, ffun, x, k=10e-12, times = 0):
+    times += 1
+    xx = x - fun(x) / ffun(x)
+    if abs(xx - x) < k:
+        return xx, times
+    else:
+        return Newton(fun, ffun, xx, k, times)
