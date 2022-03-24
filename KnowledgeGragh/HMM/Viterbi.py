@@ -1,3 +1,6 @@
+import re
+
+
 class Viterbi():
     def __init__(self, hmm):
         self.index_to_Label = hmm.index_to_labels
@@ -5,9 +8,17 @@ class Viterbi():
 
         self.initMatrix = hmm.initMatrix
         self.transferMatrix = hmm.transferMatrix
-        self.emitMatrix = hmm.transferMatrix
+        self.emitMatrix = hmm.emitMatrix
 
         self.allPath = []
+
+    # 将有符号的的句子分开，再合并成新句子
+    def dealText(self, text):
+        pattern = r',|\.|/|;|\'|`|\[|\]|<|>|\?|:|"|\{|\}|\~|!|@|#|\$|%|\^|&|\(|\)|-|=|\_|\+|，|。|、|；|‘|’|【|】|·|！| |…|（|）'
+        text = re.split(pattern, text)
+        newText = "".join(text[:])
+        print(newText)
+        return self.getPath(newText)
 
     def getPath(self, text):
         for label in self.index_to_Label:
@@ -47,13 +58,20 @@ class Viterbi():
                 tmpAllPath.append((max(newPath)))
             self.allPath = tmpAllPath
 
-            self.getRes(text)
+        return self.getRes(text)
 
     def getRes(self, text):
         res = ""
+        resP = ""
         # max(self.allPath)[1]: 选概率最大的路径集合，allPath中有两个元素0对应概率， 1对应路径
         for t, p in zip(text, max(self.allPath)[1]):
             res += t
+            resP += p
             if p == "S" or p == "E":
                 res += " "
+                resP += " "
+        f = open("result.txt", "wb")
+        f.write(res.encode("utf-8"))
+        f.write(resP.encode("utf-8"))
+        f.close()
         return res, max(self.allPath)[1]
