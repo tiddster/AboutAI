@@ -27,6 +27,7 @@ def textRead(textFile, labelFile):
     with open(labelFile, "w", encoding="utf-8") as f:
         # tqdm是用于显示进度条的第三方库
         # enumerate是在遍历时可以同时给出下标和对应的值，类似于hashmap
+        # 注意allTextData是列表
         for index, data in enumerate(allTextData):
             dataLabel = ""
 
