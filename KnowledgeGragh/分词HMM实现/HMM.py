@@ -4,7 +4,7 @@ import re
 
 import numpy as np
 
-from KnowledgeGragh.HMM.HMM分词 import textRead
+from KnowledgeGragh.分词HMM实现.HMM分词 import textRead
 
 
 class HMM:
