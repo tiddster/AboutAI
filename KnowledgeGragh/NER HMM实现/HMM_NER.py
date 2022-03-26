@@ -6,12 +6,12 @@ import  TextRead
 
 
 class HMM():
-    def __init__(self, wordList, labelList):
+    def __init__(self, wordList=[], labelList=[]):
         self.wordList = wordList
         self.labelList = labelList
 
-        self.label_to_index = {"O": 0, "B-KNOW": 1, "I-KNOW": 2, "B-PRIN": 3,"I-PRIN":4}
-        self.index_to_label = ["O", "B-KNOW", "I-KNOW", "B-PRIN","I-PRIN"]
+        self.label_to_index = {"O": 0, "B-MAT": 1, "I-MAT": 2}
+        self.index_to_label = ["O", "B-MAT", "I-MAT"]
 
         length = len(self.index_to_label)
         self.initMatrix = np.zeros(length)
@@ -22,10 +22,8 @@ class HMM():
 
         self.emitMatrix = {
             "O": {"total": 0},
-            "B-KNOW": {"total": 0},
-            "I-KNOW": {"total": 0},
-            "B-PRIN": {"total": 0},
-            "I-PRIN": {"total": 0}
+            "B-MAT": {"total": 0},
+            "I-MAT": {"total": 0}
         }
         self.emitDict = {"sumMat":self.emitMatrix, "normalMat":self.emitMatrix}
 
@@ -45,8 +43,8 @@ class HMM():
             for i in range(len(labels)-1):
                 nowLabel = labels[i]
                 nextLabel = labels[i+1]
-                nowIndex = self.label_to_index[nowLabel]
-                nextIndex = self.label_to_index[nextLabel]
+                nowIndex = self.label_to_index[nowLabel.upper()]
+                nextIndex = self.label_to_index[nextLabel.upper()]
                 self.transferMatrix[nowIndex][nextIndex] += 1
         self.transferDict.update({"sumMat": self.transferMatrix})
 
@@ -56,6 +54,7 @@ class HMM():
         labelList = self.labelList
         for words, labels in zip(wordList, labelList):
             for w, l in zip(words, labels):
+                l = l.upper()
                 self.emitMatrix[l][w] = self.emitMatrix[l].get(w,0)+1
                 self.emitMatrix[l]["total"] += 1
         self.emitDict.update({"sumMat": self.emitMatrix})
@@ -112,11 +111,3 @@ class HMM():
             f = open(modelFile, "w")
             f.truncate()
             f.close()
-
-if __name__ == '__main__':
-    wordList, labelList = TextRead.TextRead.readFile("test.txt")
-    hmm = HMM(wordList, labelList)
-    hmm.train("model.txt")
-
-
-
