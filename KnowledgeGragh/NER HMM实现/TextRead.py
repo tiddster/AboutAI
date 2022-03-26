@@ -12,6 +12,10 @@ class TextRead():
         sentenceWord = []
         sentenceLabel = []
 
+        # 关键词集合
+        keyWordList = []
+        tmpKeyWord = ""
+
         all_data = open(textName, "r", encoding="utf-8").read().split("\n")
         for index, text in enumerate(all_data):
             #print(index, text)
@@ -21,6 +25,13 @@ class TextRead():
                     continue
                 x, y = text.strip('\n').strip('\r').split(" ")
                 #print(x+"and"+y)
+
+                if y == "B-MAT" or y == "I-MAT":
+                    tmpKeyWord += x
+                elif y == "O" and tmpKeyWord:
+                    keyWordList.append(tmpKeyWord)
+                    tmpKeyWord = ""
+
                 sentenceWord.append(x)
                 sentenceLabel.append(y)
             else:
@@ -30,8 +41,9 @@ class TextRead():
                 sentenceLabel = []
         wordList.append(sentenceWord)
         labelList.append(sentenceLabel)
+        #print(keyWordList)
         return wordList, labelList
 
 if __name__ == '__main__':
-    textName = 'test.txt'
+    textName = 'math_train_data.txt'
     TextRead.readFile(textName)
