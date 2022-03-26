@@ -21,10 +21,10 @@ def ff(p, q, N, M, x):
     return p * M * x **(M-1) - (q+p)*(M-N) * x ** (M-N-1)
 
 def func(x):
-    return f(dataSet3[0], dataSet3[1], dataSet3[2], dataSet3[3], x)
+    return f(dataSet2[0], dataSet2[1], dataSet2[2], dataSet2[3], x)
 
 def ffunc(x):
-    return ff(dataSet3[0], dataSet3[1], dataSet3[2], dataSet3[3], x)
+    return ff(dataSet2[0], dataSet2[1], dataSet2[2], dataSet2[3], x)
 
 
 # 导入库进行求解
