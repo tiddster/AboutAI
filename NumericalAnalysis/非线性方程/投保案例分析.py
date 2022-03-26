@@ -3,6 +3,10 @@ from 牛顿迭代法 import Newton as nt
 from 弦截法 import XianJie as XJ
 from 二分求解方程 import erFen as EF
 
+dataSet1 = [200, 2282, 420, 639]  #二十五岁投保
+dataSet2 = [200, 1056, 300, 519]  #三十五岁投保
+dataSet3 = [200, 420, 180, 399]
+
 def f(p, q, N, M, x):
     """
     :param p: 每月投保金额
@@ -17,10 +21,10 @@ def ff(p, q, N, M, x):
     return p * M * x **(M-1) - (q+p)*(M-N) * x ** (M-N-1)
 
 def func(x):
-    return f(200, 420, 300-120, 639-120-120, x)
+    return f(dataSet3[0], dataSet3[1], dataSet3[2], dataSet3[3], x)
 
 def ffunc(x):
-    return ff(200, 420, 300-120, 639-120-120, x)
+    return ff(dataSet3[0], dataSet3[1], dataSet3[2], dataSet3[3], x)
 
 
 # 导入库进行求解
