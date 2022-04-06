@@ -15,31 +15,36 @@ class NewtonInterpolation():
 
     def DiffQuotient(self,xs):
         m = len(xs)
-        if m == 2:
-            return (self.f(xs[1]) - self.f(xs[0])) / (xs[1] - xs[0])
-        else:
-            res = self.DiffQuotient(xs[:-1])
-            self.C.append(res)
-            return (res - self.DiffQuotient(xs[1:])) / (xs[0] - xs[-1])
+        for i in range(m):
+            total = 0
+            for j in range(i+1):
+                xj = xs[j]
+                omega = 1
+                tempXs = xs[:i+1].copy()
+                tempXs.remove(xj)
+                tempXs =[xj - x for x in tempXs]
+                for x in tempXs:
+                    omega *= x
+                total += self.f(xj) / omega
+            self.C.append(total)
 
-    def getC(self,xs):
-        self.C.append(self.DiffQuotient(xs))
+    def getC(self, xs):
+        self.DiffQuotient(xs)
         return self.C
 
-    def getValue(self,x):
-        res = self.ys[0]
+    def getValue(self,X):
+        res = 0
         m = len(self.C)
-        for i in range(1,m):
-            temp = 1
-            for tempX in self.xs[:i]:
-                temp *= (x - tempX)
-            res += temp
-            print(res)
+        for i in range(m):
+            pro = 1
+            for x in self.xs[:i]:
+                pro *= (X - x)
+            res += pro * self.C[i]
         return res
 
 if __name__ == '__main__':
-    xs = [8.1,8.2,8.6,8.7]
-    ys = [16.94410, 17.56492, 18.50515, 18.82091]
+    xs = [0,10,20,30,40,50]
+    ys = [10.6,3.810,1.492,0.629,0.2754,0.1867]
     NI = NewtonInterpolation(xs, ys)
     print(NI.getC(xs))
-    print(NI.getValue(8.4))
+    print(NI.getValue(45))
