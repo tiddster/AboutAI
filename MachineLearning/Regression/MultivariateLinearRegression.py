@@ -35,10 +35,10 @@ class MLR():
         lastCost = self.J()
 
         m = self.length
-        total = 0
         tempThetas = self.theta.copy()
 
         for i in range(len(self.theta)):
+            total = 0
             for x, y in zip(self.paddedXs, self.ys):
                 total += (self.h(x) - y) * x[i]
             tempThetas[i] -= alpha * total / m
