@@ -45,6 +45,7 @@ class Viterbi():
                 # 从新添加的所有路径中选择概率最大的
                 tmpAllPath.append((max(newPath)))
             self.allPath = tmpAllPath
+        return self.getRes(text)
 
     def getRes(self, text):
         res = ""
