@@ -64,3 +64,5 @@ if __name__ == '__main__':
     ]
     ys = [1, 1, 0, 0]
     lr = LR(thetas, xs, ys)
+    print(lr.J())
+    print(lr.GradientDescent())

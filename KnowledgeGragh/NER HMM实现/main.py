@@ -35,7 +35,6 @@ def TestContext(textFileName):
     textList = open(textFileName, "r", encoding="utf-8").read().split("\n")
     return textList
 
-
 if __name__ == '__main__':
     hmm = getModel("data\\math_train_data.txt", "NERModel.pkl")
 

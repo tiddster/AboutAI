@@ -46,6 +46,7 @@ class Interpolation():
         newX = np.linspace(max(xs), min(xs), 100)
 
         S = interpolate.interp1d(xs, ys, 'cubic')
+        print(S)
 
         if x is not None:
             print(f"当x = {x}时, 预估值为:{S(x)}")
@@ -59,10 +60,12 @@ class Interpolation():
         return 1 / (1 + x**4)
 
 if __name__ == '__main__':
-    xs = np.linspace(0,50,6)
-    ys = np.array([
-        10.6, 3.810, 1.492, 0.629, 0.2754, 0.1867
-    ])
+    xs = np.array(
+        [-1,1,2,4]
+    )
+    ys = np.array(
+        [-3,0,5,4]
+    )
     print(xs,ys)
     itpl = Interpolation(xs,ys)
-    itpl.lagrange(2)
+    itpl.cubicSpline()
