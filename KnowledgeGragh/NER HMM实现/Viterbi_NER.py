@@ -45,19 +45,28 @@ class Viterbi():
                 # 从新添加的所有路径中选择概率最大的
                 tmpAllPath.append((max(newPath)))
             self.allPath = tmpAllPath
+        return self.getRes(text)
 
     def getRes(self, text):
         res = ""
         resP = ""
         # max(self.allPath)[1]: 选概率最大的路径集合，allPath中有两个元素0对应概率， 1对应路径
         lastP = ""
+
+        entities = {}
+        entity = ""
+
         for t, p in zip(text, max(self.allPath)[1]):
+            if p == "B-MAT" or p == "I-MAT":
+                entity += t
             if p == "B-MAT":
                 res += " "
                 resP += " "
             if p == "O" and (lastP == "I-MAT" or lastP == "B-MAT"):
                 res += " "
                 resP += " "
+                entities[entity] = entities.get(entity, 0) + 1
+                entity = ""
             res += t
             resP += p
             lastP = p
@@ -65,4 +74,4 @@ class Viterbi():
         #f.write(res.encode("utf-8"))
         #f.write(resP.encode("utf-8"))
         #f.close()
-        return res, max(self.allPath)[1]
+        return res, max(self.allPath)[1], entities

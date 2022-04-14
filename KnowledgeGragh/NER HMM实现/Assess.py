@@ -3,15 +3,16 @@ import numpy as np
 class Assess():
     # 利用混淆矩阵CM来求，准确率和召回率
     # 其中CM[i][j] 为 标记为i类，结果被预测为j类的数量
-    def __init__(self, originLabels, predictLabels, hmm = None):
+    def __init__(self, originLabels, predictLabels, hmm=None):
         self.originLabels = originLabels
         self.predictLabels = predictLabels
 
         length = len(originLabels)
-        self.CM = np.zeros([2,2])
+        self.label_to_index = hmm.label_to_index
 
-        #self.label_to_index = hmm.label_to_index
-        self.label_to_index = {'O':0, 'B':1}
+        self.CM = np.zeros([len(self.label_to_index),len(self.label_to_index)])
+
+        self.assessModel()
 
     def assessModel(self):
         for OList, PList in zip(self.originLabels, self.predictLabels):
@@ -39,7 +40,7 @@ class Assess():
         precision = self.getPrecision(label)
         return 2 * precision * recall / (recall + precision)
 
-
+'''
 if __name__ == '__main__':
     OLabels = [['O','B','B','B','O','O']]
     PLabels = [['O','B','B','O','O','B']]
@@ -48,5 +49,6 @@ if __name__ == '__main__':
     print(assess.CM)
     print(assess.getPrecision('O'))
     print(assess.getPrecision('B'))
+'''
 
 
