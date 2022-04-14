@@ -1,24 +1,30 @@
 import numpy as np
 import math
-
+import matplotlib.pyplot as plt
 
 class LR:
-    def __init__(self, thetas, xs, ys):
-        self.thetas = thetas
+    def __init__(self, n, xs, ys):
+        self.thetas = np.zeros(n)
         self.ys = ys
-        self.X = xs.copy()
+        self.xs = xs
 
-        tempOnes = np.ones([len(self.ys), 1])
-        self.X = np.hstack((tempOnes, self.X))
+    # 拟合函数,也就是将聚类分开的那条线
+    def g(self, x, reCal=False):
+        if reCal:
+            X = np.array([1, x[0], x[1], x[0]**2, x[0]*x[1], x[1]**2])
+            return np.dot(self.thetas, x.T)
+        else:
+            return np.dot(self.thetas, x.T)
 
     def h(self, x):
-        power = np.dot(self.thetas, x.T)
-        return 1 / (1 + math.exp(power))
+        res = self.g(x)
+        print(res, 1 / (1 + math.exp(-res)))
+        return 1 / (1 + math.exp(-res))
 
     def J(self):
         res = 0
         m = len(self.ys)
-        for x, y in zip(self.X, self.ys):
+        for x, y in zip(self.xs, self.ys):
             res += self.costFunction(x, y)
         return res / m
 
@@ -32,9 +38,9 @@ class LR:
         elif y == 0:
             return -math.log(1 - self.h(x))
 
-    def GradientDescent(self, alpha=0.1, k=10e-6):
+    def GradientDescent(self, alpha=0.2, k=10e-3):
         m = len(self.ys)
-        X = self.X
+        X = self.xs
         Y = self.ys
         tempThetas = self.thetas.copy()
         lastCost = self.J()
@@ -53,16 +59,41 @@ class LR:
         else:
             return self.thetas
 
+    def plot(self, xs):
+        x0Y0, x0Y1, x1Y0, x1Y1 = [], [], [], []
+        for x, y in zip(xs, self.ys):
+            if y == 0:
+                x0Y0.append(x[0])
+                x1Y0.append(x[1])
+            else:
+                x0Y1.append(x[0])
+                x1Y1.append(x[1])
+
+        plt.plot(x0Y0, x1Y0, '.')
+        plt.plot(x0Y1, x1Y1, '.')
+
+        plt.show()
+
+def fitFunction(xs):
+    X = np.array([])
+    for index, x in enumerate(xs):
+        tempX = np.array([1, x[0], x[1], x[0]**2, x[0]*x[1], x[1]**2])
+        if index == 0:
+            X = tempX
+        else:
+            X = np.vstack((X, tempX))
+    return X
 
 if __name__ == '__main__':
-    thetas = [0, 1]
     xs = [
-        [1],
-        [0],
-        [1],
-        [0]
+        [1, 0.5],
+        [1, 1.5],
+        [2, 1],
+        [3, 1]
     ]
-    ys = [1, 1, 0, 0]
-    lr = LR(thetas, xs, ys)
+    ys = [0, 0, 1, 0]
+    print(fitFunction(xs))
+    lr = LR(6, fitFunction(xs), ys)
     print(lr.J())
     print(lr.GradientDescent())
+    lr.plot(xs)
