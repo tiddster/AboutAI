@@ -26,12 +26,24 @@ class MLR():
             total += (self.h(x) - y) ** 2
         return total / (2 * m)
 
+    def regularizedJ(self, Lambda=0):
+        m = self.length
+        punish = Lambda * np.sum(np.power(self.theta[1:], 2))
+        return self.J() + punish / (2*m)
+
     def JInMatrix(self):
         m = self.length
         res = np.sum((np.dot(self.theta, self.paddedXs.T) - self.ys) ** 2)
+        # 正规化 在代价函数中增加了惩罚
+        # 且规定一般不将theta0加入惩罚措施
         return res / (2 * m)
 
-    def GradientDescent(self, alpha=0.1, k=10e-6):
+    def regularizedJInMatrix(self, Lambda=0):
+        m = self.length
+        punish = Lambda * np.sum(np.power(self.theta[1:], 2))
+        return self.J() + punish / (2 * m)
+
+    def GradientDescent(self, alpha=0.1, k=10e-6,Lambda=0):
         lastCost = self.J()
 
         m = self.length
@@ -41,7 +53,11 @@ class MLR():
             total = 0
             for x, y in zip(self.paddedXs, self.ys):
                 total += (self.h(x) - y) * x[i]
-            tempThetas[i] -= alpha * total / m
+            if i == 0:
+                self.theta[i] -= alpha * total / m
+                tempThetas[i] -= self.theta[i]
+            else:
+                tempThetas[i] -= alpha * (total - Lambda * tempThetas[i]) / m
 
         print(tempThetas)
 
@@ -53,11 +69,11 @@ class MLR():
         else:
             return self.GradientDescent(alpha=alpha)
 
-    def GradientDescentInMatrix(self, alpha=0.1, k=10e-6):
+    def GradientDescentInMatrix(self, alpha=0.1, k=10e-6, Lambda=0):
         lastCost = self.JInMatrix()
 
         m = self.length
-        tempThetas = self.theta - alpha / m * np.dot((np.dot(self.theta,self.paddedXs.T) - self.ys ), self.paddedXs)
+        tempThetas = self.theta - alpha / m * np.dot((np.dot(self.theta,self.paddedXs.T) - self.ys), self.paddedXs)
 
         self.theta = tempThetas
         nowCost = self.JInMatrix()
@@ -78,6 +94,8 @@ if __name__ == '__main__':
     ys = [4, 4, 1, 3]
     mlr = MLR(thetas, xs, ys)
     print(mlr.J())
+    print(mlr.regularizedJ(1))
     print(mlr.JInMatrix())
-    #print(mlr.GradientDescent())
+    print(mlr.regularizedJInMatrix(1))
+    print(mlr.GradientDescent(Lambda=1))
     print(mlr.GradientDescentInMatrix())

@@ -3,16 +3,20 @@ import numpy as np
 
 class NE():
     def __init__(self, xs, ys):
-        self.xs = xs
+        self.xs = np.matrix(xs)
         self.ys = ys
         self.length = len(ys)
+
+        self.A = np.zeros([self.xs[0].shape[0]+1, self.xs[0].shape[0]+1])
+        for i in range(1, self.xs[0].shape[0]+1):
+            self.A[i,i] = 1
 
         ones = np.ones([self.length, 1])
         self.X = np.hstack((ones, self.xs))
 
-    def NormalEquation(self):
+    def NormalEquation(self, Lambda=0):
         X = self.X
-        return np.dot(np.dot(np.linalg.inv(np.dot(X.T, X)), X.T), self.ys)
+        return np.dot(np.dot(np.linalg.inv(np.dot(X.T, X) - Lambda * self.A), X.T), self.ys)
 
 
 if __name__ == '__main__':
@@ -24,4 +28,4 @@ if __name__ == '__main__':
     ]
     ys = [4, 4, 1, 3]
     ne = NE(xs, ys)
-    ne.NormalEquation()
+    print(ne.NormalEquation(1))

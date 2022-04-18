@@ -23,7 +23,7 @@ class LREX:
         else:
             self.X = self.polyTrans(self.X_data[:,0].ravel(), self.X_data[:,1].ravel(), 6)
             row, col = self.X.shape
-            self.theta = np.zeros(col)
+            self.theta = np.ones(col)
 
     def textRead(self, path):
         data = pd.read_csv(path, header=None, names=['x1', 'x2', 'y'])
@@ -41,29 +41,27 @@ class LREX:
         return np.exp(z) / (1 + np.exp(z))
 
     # 损失函数
-    def costFunc(self, theta, X, y):
+    def costFunc(self, theta, X, y, Lambda=0):
 
         hx = self.g(np.dot(X, theta))
         cost = -np.mean(np.multiply(y, np.log(hx)) + np.multiply(1 - y, np.log(1 - hx)))
 
-        return cost
+        return cost + Lambda/(2*len(self.X)) * np.sum(np.power(theta, 2))
 
     def gradientDescent(self, theta=None, X=None, Y=None):
-        theta = self.theta if theta is None else theta
-        X = np.matrix(self.X) if X is None else X
-        Y = np.matrix(self.Y) if Y is None else Y
-
         gradTheta = np.zeros(len(theta))
-
         error = self.g(np.dot(X, theta)).T - Y
 
         for i in range(len(theta)):
             term = np.multiply(error, X[:, i])
             gradTheta[i] = np.sum(term) / len(X)
 
-        self.theta = gradTheta.copy()
-
         return gradTheta
+
+    def regularizedGradient(self, theta, X, Y, l=1):
+        tempTheta = l / Y.size * theta
+        tempTheta[0] = 0  # 第一项不惩罚设为0
+        return self.gradientDescent(theta, X, Y) + tempTheta
 
     # 利用scipy得到最优theta
     def findBestTheta(self):
@@ -71,7 +69,7 @@ class LREX:
         X = np.matrix(self.X)
         Y = np.matrix(self.Y)
 
-        result = opt.minimize(fun=self.costFunc, x0=theta, args=(X, Y),jac=self.gradientDescent, method='TNC')
+        result = opt.minimize(fun=self.costFunc, x0=theta, args=(X, Y),jac=self.regularizedGradient, method='TNC')
         self.theta = result.x
         return result
 
@@ -115,8 +113,9 @@ class LREX:
 
 if __name__ == '__main__':
     lrex = LREX('dataset\ex2data2.txt', 1)
-    print(lrex.costFunc(lrex.theta, lrex.X, lrex.Y))
-    print(lrex.gradientDescent())
-    print(lrex.findBestTheta())
+    print(lrex.costFunc(lrex.theta, lrex.X, lrex.Y, 5))
+    print(lrex.gradientDescent(lrex.theta, lrex.X, lrex.Y))
+    print(lrex.regularizedGradient(lrex.theta, lrex.X, lrex.Y, 5))
+    lrex.findBestTheta()
     lrex.plotBound()
 
