@@ -6,6 +6,8 @@ class LS:
         self.X = X
         self.Y = Y
         self.n = n
+        print(self.X)
+        print(self.Y)
 
     def NormalEquation1(self):
         neX = np.zeros([self.n + 1, self.n + 1])
@@ -30,7 +32,7 @@ class LS:
                 neX[i][j] = x ** j
         return np.dot(np.dot(np.linalg.inv(np.dot(neX.T, neX)), neX.T), self.Y)
 
-    def plot2(self):
+    def plot2(self,a,b):
         thetas = self.NormalEquation2()
         print(thetas)
 
@@ -38,7 +40,7 @@ class LS:
             L = np.array([x ** i for i in range(len(thetas))])
             return np.dot(thetas, L.T)
 
-        XS = np.linspace(0,1,100)
+        XS = np.linspace(min(self.X),max(self.Y),100)
         YS = []
         for x in XS:
             YS.append(f(x))
@@ -48,7 +50,7 @@ class LS:
         plt.show()
 
 if __name__ == '__main__':
-    X = np.array([0, 0.2, 0.5, 0.7, 0.85, 1.0])
-    Y = np.array([1, 1.221, 1.649, 2.014, 2.340, 2.718])
+    X = np.arange(1997,2010,1)
+    Y = np.array([767,895,995,1117,1261,1437,1640,1957,2244,2489,2801,3096,3500])
     ls = LS(X, Y, 2)
-    ls.plot2()
+    ls.plot2(1997,2010)
