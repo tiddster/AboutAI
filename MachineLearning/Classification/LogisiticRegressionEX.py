@@ -37,20 +37,20 @@ class LREX:
 
         return data
 
-    def g(self, z):
+    def sigmod(self, z):
         return np.exp(z) / (1 + np.exp(z))
 
     # 损失函数
     def costFunc(self, theta, X, y, Lambda=0):
 
-        hx = self.g(np.dot(X, theta))
+        hx = self.sigmod(X @ theta)
         cost = -np.mean(np.multiply(y, np.log(hx)) + np.multiply(1 - y, np.log(1 - hx)))
 
         return cost + Lambda/(2*len(self.X)) * np.sum(np.power(theta, 2))
 
     def gradientDescent(self, theta=None, X=None, Y=None):
         gradTheta = np.zeros(len(theta))
-        error = self.g(np.dot(X, theta)).T - Y
+        error = self.sigmod(X @ theta).T - Y
 
         for i in range(len(theta)):
             term = np.multiply(error, X[:, i])
@@ -75,7 +75,7 @@ class LREX:
 
     def predict(self):
         def predict(theta, X):
-            probability = self.g(np.dot(X, theta))
+            probability = self.sigmod(X @ theta)
             return [1 if x >= 0.5 else 0 for x in probability]
 
     #多项式逻辑回归
