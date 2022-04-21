@@ -12,7 +12,6 @@ if __name__ == '__main__':
     noiseImg = noise.setNoise()
 
     gaussImg = gm.gaussFilter(noiseImg)
-    print(gaussImg)
 
     plt.subplot(1,2,1)
     io.imshow(gaussImg)
