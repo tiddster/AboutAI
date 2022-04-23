@@ -1,3 +1,4 @@
+from matplotlib import pyplot as plt
 from scipy.io import loadmat
 import numpy as np
 
@@ -7,13 +8,43 @@ def textRead(file):
     return data
 
 
+def plot_an_image(X, y):
+    """
+    随机打印一个数字
+    """
+    pick_one = np.random.randint(0, 5000)
+    image = X[pick_one, :]
+    fig, ax = plt.subplots(figsize=(2, 2))
+    ax.matshow(image.reshape((20, 20)).T, cmap='gray_r')
+    plt.xticks([])  # 去除刻度，美观
+    plt.yticks([])
+    plt.show()
+    print('this should be {}'.format(y[pick_one]))
+    return image
+
+
+def plot_images(X, y):
+    picks = [np.random.randint(0, X.shape[0]) for i in range(100)]
+    pickXs = X[picks, :]
+
+    fig, ax = plt.subplots(nrows=10, ncols=10,figsize=(12,12))
+    for r in range(10):
+        for c in range(10):
+            ax[r,c].matshow(pickXs[r * 10 + c].reshape((20, 20)).T, cmap='gray_r')
+            plt.xticks([])
+            plt.yticks([])
+    plt.show()
+    pickYs = y[picks]
+
+    print('this should be {}'.format(pickYs))
+    return pickXs, pickYs
+
+
 class DP:
     def __init__(self, file):
         data = textRead(file)
-        X_data = data['X']
+        self.X = data['X']
         self.Y = data['y']
 
         ones = np.ones(self.Y.shape)
-        self.X = np.hstack((ones, X_data))
-
-
+        self.oneX = np.hstack((ones, self.X))
