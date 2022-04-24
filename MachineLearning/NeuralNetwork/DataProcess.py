@@ -11,6 +11,7 @@ def textRead(file):
 def plot_an_image(X, y):
     """
     随机打印一个数字
+    :param X: 不带常量1的X
     """
     pick_one = np.random.randint(0, 5000)
     image = X[pick_one, :]
@@ -24,6 +25,10 @@ def plot_an_image(X, y):
 
 
 def plot_images(X, y):
+    """
+    随机打印一个数字
+    :param X: 不带常量1的X
+    """
     picks = [np.random.randint(0, X.shape[0]) for i in range(100)]
     pickXs = X[picks, :]
 
@@ -36,8 +41,13 @@ def plot_images(X, y):
     plt.show()
     pickYs = y[picks]
 
-    print('this should be {}'.format(pickYs))
+    print('this should be {}'.format(pickYs.ravel()))
     return pickXs, pickYs
+
+class DPTheta:
+    def __init__(self, file):
+        data = textRead(file)
+        self.theta1, self.theta2 = data['Theta1'], data['Theta2']
 
 
 class DP:
