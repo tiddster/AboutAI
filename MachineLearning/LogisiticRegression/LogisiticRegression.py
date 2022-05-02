@@ -3,10 +3,16 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import scipy.optimize as opt
+from sklearn import linear_model
 
+def getModel(x, y):
+    model = linear_model.LogisticRegression(penalty='l2', C=1.0)
+    model.fit(x, y.ravel())
+    return model
 
+'''
 class LREX:
-    def __init__(self, path, form=0):
+    def __init__(self, path, degree=0):
         self.positive = []
         self.negative = []
         data = np.matrix(self.textRead(path))
@@ -15,13 +21,14 @@ class LREX:
 
         self.X_data = data[:, :col-1]
         self.Y = data[:, col-1:]
+        self.degree = degree
 
-        if form == 0:
+        if degree == 0:
             ones = np.ones((len(self.X_data), 1))
             self.X = np.hstack((ones, self.X_data))
             self.theta = np.zeros(col)
         else:
-            self.X = self.polyTrans(self.X_data[:,0].ravel(), self.X_data[:,1].ravel(), 10)
+            self.X = self.polyTrans(self.X_data[:,0].ravel(), self.X_data[:,1].ravel(), degree)
             row, col = self.X.shape
             self.theta = np.ones(col)
 
@@ -45,7 +52,7 @@ class LREX:
     # 损失函数
     def costFunc(self, theta, X, y, l=0):
         hx = self.sigmod(X @ theta)
-        cost = -np.mean(np.multiply(y, np.log(hx)) + np.multiply(1 - y, np.log(1 - hx))) / len(y)
+        cost = np.sum(np.multiply(y, np.log(hx)) + np.multiply(1 - y, np.log(1 - hx))) / len(y)
         regulation = l * np.sum(theta[1:] ** 2) / (2*len(y))
         return cost + regulation
 
@@ -68,7 +75,7 @@ class LREX:
 
         result = opt.minimize(fun=self.costFunc, x0=theta, args=(X, Y),jac=self.regularizedGradient, method='TNC')
         self.theta = result.x
-        return result
+        return result.x
 
     def predict(self):
         def predict(theta, X):
@@ -98,7 +105,7 @@ class LREX:
 
         uu, vv = np.meshgrid(u,v)
 
-        z = np.dot(self.polyTrans(uu.ravel(), vv.ravel(), 10), self.theta)
+        z = np.dot(self.polyTrans(uu.ravel(), vv.ravel(), self.degree), self.theta)
 
         z = z.reshape(uu.shape)
 
@@ -108,9 +115,8 @@ class LREX:
         plt.show()
 
 if __name__ == '__main__':
-    lrex = LREX('dataset\ex2data2.txt', 1)
-    print(lrex.costFunc(lrex.theta, lrex.X, lrex.Y, 5))
-    print(lrex.gradientDescent(lrex.theta, lrex.X, lrex.Y))
-    print(lrex.regularizedGradient(lrex.theta, lrex.X, lrex.Y, 5))
+    lrex = LREX('dataset\ex2data2.txt', 6)
+    print(lrex.findBestTheta())
     lrex.plotBound()
+'''
 
