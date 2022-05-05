@@ -69,6 +69,7 @@ class DataUtils:
         Y_OH = encoder.fit_transform(self.Y)
         return Y_OH
 
+    # 初始化thetas全部为数值较小的随机数，否则BP算法算出的权值全都一样
     def initTheta(self):
         hiddenSize = config.hiddenSize
         inputSize = config.inputSize

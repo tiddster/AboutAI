@@ -3,7 +3,7 @@ import numpy as np
 from MachineLearning.LogisiticRegression.Sigmoid import sigmoid
 
 
-def forwardP(X, theta1, theta2):
+def forward_prop(X, theta1, theta2):
     m = X.shape[0]
     ones = np.ones((m,1))
 
