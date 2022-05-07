@@ -39,11 +39,11 @@ def pre_back_prop(thetas, input_size, hidden_size, num_labels, X, Y_OH, l=1):
     delta1 /= m
     delta2 /= m
 
-    return J, delta1, delta2
+    return J, delta1, delta2, theta1, theta2
 
 
 def back_prop(thetas, input_size, hidden_size, num_labels, X, Y_OH, l=1):
-    J, delta1, delta2 = pre_back_prop(thetas, input_size, hidden_size, num_labels, X, Y_OH)
+    J, delta1, delta2 = pre_back_prop(thetas, input_size, hidden_size, num_labels, X, Y_OH)[:3]
     grad = np.concatenate((np.ravel(delta1), np.ravel(delta2)))
     return J, grad
 
@@ -51,15 +51,12 @@ def back_prop(thetas, input_size, hidden_size, num_labels, X, Y_OH, l=1):
 def reg_back_prop(thetas, input_size, hidden_size, num_labels, X, Y_OH, l=1):
     m = X.shape[0]
 
-    J, delta1, delta2 = pre_back_prop(thetas, input_size, hidden_size, num_labels, X, Y_OH)
-
-    theta1 = np.reshape(thetas[:(input_size + 1) * hidden_size], (input_size + 1, hidden_size))  # (401, 25)
-    theta2 = np.reshape(thetas[(input_size + 1) * hidden_size:], (hidden_size + 1, num_labels))  # (26, 10)
+    J, delta1, delta2, theta1, theta2 = pre_back_prop(thetas, input_size, hidden_size, num_labels, X, Y_OH)
 
     delta1[1:, :] += (theta1[1:,:] * l) / m
     delta2[1:, :] += (theta2[1:,:] * l) / m
 
     grad = np.concatenate((np.ravel(delta1), np.ravel(delta2)))
 
-    return J, grad
+    return grad
 

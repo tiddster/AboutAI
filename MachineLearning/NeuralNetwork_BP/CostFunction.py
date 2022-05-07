@@ -28,7 +28,7 @@ def cost_function(thetas, inputSize, hiddenSize, numLabels, X, Y_OH):
     return J / m
 
 
-def reg_cost_function(thetas, inputSize, hiddenSize, numLabels, X, Y_OH, l=1):
+def reg_cost_function(thetas, inputSize, hiddenSize, numLabels, X, Y_OH, l=0.1):
     m = X.shape[0]
 
     J = cost_function(thetas, inputSize, hiddenSize, numLabels, X, Y_OH)
