@@ -7,10 +7,20 @@ from MachineLearning.NeuralNetwork_BP import config
 
 train_path = 'dataset\\ex4data1.mat'
 weights_path = 'dataset\\ex4weights.mat'
+save_path = 'dataset\\save.txt'
 
 
 def textRead(file):
     data = loadmat(file)
+    return data
+
+
+def saveWeight(file, thetas):
+    np.savetxt(file, thetas)
+
+
+def readWeight(file):
+    data = np.loadtxt(file)
     return data
 
 
