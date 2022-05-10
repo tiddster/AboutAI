@@ -1,6 +1,6 @@
 import numpy as np
 
-import OneVsAll as OVA
+import OneVsAllGradient as OVA
 import MachineLearning.NeuralNetwork.DataProcess as DP
 import PredictOVA as POVA
 import NN
