@@ -17,7 +17,6 @@ pickXs, pickYs = plot_images(X, Y)
 
 thetas = readWeight(DU.save_path)
 
-
 y_pred = predict(thetas,pickXs)
 print(y_pred)
 print(getAccuracy(y_pred, pickYs))

@@ -14,6 +14,7 @@
     <file url="file://$PROJECT_DIR$/MachineLearning/NeuralNetwork/PredictOVA.py" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/MachineLearning/NeuralNetwork_BP/CostFunction.py" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/MachineLearning/NeuralNetwork_BP/DataUtils.py" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/NumericalAnalysis/微分方程/Euler.py" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/NumericalAnalysis/积分/复化求积.py" charset="UTF-8" />
     <file url="PROJECT" charset="GBK" />
   </component>
