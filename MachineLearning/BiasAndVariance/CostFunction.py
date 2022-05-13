@@ -1,3 +1,5 @@
+import numpy as np
+
 
 def cost_function(theta, X, y):
     """
@@ -12,6 +14,6 @@ def cost_function(theta, X, y):
     print(X.shape)
 
     hx = X @ theta
-    cost = (hx - y) ** 2 / (2*m)
+    cost = np.sum((hx - y) ** 2) / (2*m)
 
     return cost

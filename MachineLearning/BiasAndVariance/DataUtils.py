@@ -15,4 +15,4 @@ class DataUtils:
         self.X, self.y = data['X'], data['y']
         self.X_test, self.y_test = data['Xtest'], data['ytest']
         self.X_val, self.y_val = data['Xval'], data['yval']
-        self.theta = np.zeros(self.X.shape[0])
+        self.theta = np.ones(self.X.shape[1])
