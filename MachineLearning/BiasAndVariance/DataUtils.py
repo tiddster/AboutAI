@@ -15,4 +15,15 @@ class DataUtils:
         self.X, self.y = data['X'], data['y']
         self.X_test, self.y_test = data['Xtest'], data['ytest']
         self.X_val, self.y_val = data['Xval'], data['yval']
-        self.theta = np.ones(self.X.shape[1])
+
+        self.oneX, self.oneX_test, self.oneX_val = self.add_ones(self.X), self.add_ones(self.X_test), self.add_ones(self.X_val)
+
+        self.theta = np.ones((1, self.oneX.shape[1]))
+
+    def add_ones(self, X):
+        m = X.shape[0]
+
+        ones = np.ones((m,1))
+        X = np.hstack((ones, X))
+
+        return X
