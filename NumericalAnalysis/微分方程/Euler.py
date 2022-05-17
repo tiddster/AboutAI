@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 
 
 def f_(x, y):
-    return y - 2 * x / y
+    return 1 + (x-y)*(x-y)
 
 
 def f(x):
@@ -19,12 +19,14 @@ def explicit_euler(a, b, N, y0, f_):
     y_pred[0], xs[0], ys[0] = y0, a, y0
     for i in range(1, N + 1):
         xs[i] = xs[i - 1] + h
-        ys[i] = f(xs[i])
+        #ys[i] = f(xs[i])
         y_pred[i] = y_pred[i - 1] + h * f_(xs[i - 1], y_pred[i - 1])
+        y_pred[i] = format(y_pred[i], ".5f")
+        print(f"第{i}个 Euler方法函数值为{y_pred[i]}")
 
     print(y_pred)
     plt.plot(xs, y_pred)
-    plt.plot(xs, ys, '.')
+    #plt.plot(xs, ys, '.')
     plt.show()
 
 
@@ -60,12 +62,14 @@ def improve_euler(a, b, N, y0, f_):
         yp = y_pred[i - 1] + h * f_(xs[i - 1], y_pred[i - 1])
         yc = y_pred[i - 1] + h * f_(xs[i], yp)
         y_pred[i] = (yp + yc) / 2
+        y_pred[i] = format(y_pred[i], ".5f")
         ys[i] = f(xs[i])
+        print(f"第{i}个 Euler方法函数值为{y_pred[i]}")
 
     print(y_pred)
     plt.plot(xs, y_pred)
-    plt.plot(xs, ys, '.')
+    #plt.plot(xs, ys, '.')
     plt.show()
 
 
-implicit_euler(0, 1, 10, 1, f_)
+explicit_euler(0, 1, 10, 1, f_)
