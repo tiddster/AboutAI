@@ -8,7 +8,7 @@ def costFunc(theta, X, y):
     theta : R(1,n), linear regression parameters
     """
     m = X.shape[0]
-
+    #print(X.shape, theta.shape)
     hx = X @ theta.T
     cost = np.sum((hx - y) ** 2) / (2 * m)
 
