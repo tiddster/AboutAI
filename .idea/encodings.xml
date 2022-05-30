@@ -21,7 +21,10 @@
     <file url="file://$PROJECT_DIR$/NumericalAnalysis/微分方程/Euler.py" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/NumericalAnalysis/微分方程/RK.py" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/NumericalAnalysis/期末/T1.py" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/NumericalAnalysis/期末/T2.py" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/NumericalAnalysis/期末/T3.py" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/NumericalAnalysis/积分/复化求积.py" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/test.py" charset="UTF-8" />
     <file url="PROJECT" charset="GBK" />
   </component>
 </project>
